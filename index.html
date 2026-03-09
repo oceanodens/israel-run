@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0"><!-- v3 -->
+<meta http-equiv="Expires" content="0"><!-- v7 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -180,80 +180,63 @@ function px(x,y,w,h,c){ ctx.fillStyle=c; ctx.fillRect(x,y,w,h); }
 
 // ── ISRAEL ──
 function drawIsrael(cx, cy, bounce) {
-  const p  = T/16;
-  const ox = cx - 8*p;
-  const oy = cy - 22*p + bounce;
+  const p = T/16;
+  const ox = Math.round(cx - 8*p);
+  const oy = Math.round(cy - 22*p + bounce);
+  const s = v => Math.round(v);
 
-  // Shadow
   ctx.save(); ctx.fillStyle='rgba(0,0,0,0.2)';
   ctx.scale(1,0.25); ctx.beginPath();
   ctx.arc(cx,(cy+1)*4,6*p,0,Math.PI*2); ctx.fill(); ctx.restore();
 
-  // Shoes
-  px(ox+2*p,  oy+20*p,4.5*p,2*p,PAL.shoe);
-  px(ox+9.5*p,oy+20*p,4.5*p,2*p,PAL.shoe);
-  px(ox+2*p,  oy+20*p,4.5*p,0.8*p,PAL.shoeStripe);
-  px(ox+9.5*p,oy+20*p,4.5*p,0.8*p,PAL.shoeStripe);
-  // Legs
-  px(ox+3*p,  oy+15*p,2.5*p,6*p,PAL.skin);
-  px(ox+10.5*p,oy+15*p,2.5*p,6*p,PAL.skin);
-  // Shorts
-  px(ox+2*p,oy+11*p,12*p,5*p,PAL.shorts);
-  px(ox+7.5*p,oy+11*p,1*p,5*p,PAL.shortsDark);
-  // Shirt
-  px(ox+1*p,oy+4*p,14*p,8*p,PAL.shirt);
-  px(ox+1*p,oy+4*p,2*p,8*p,PAL.shirtHL);
-  px(ox+13*p,oy+4*p,2*p,8*p,PAL.shirtDark);
-  px(ox+4*p,oy+6*p,0.8*p,5*p,PAL.shirtDark);
-  px(ox+11*p,oy+6*p,0.8*p,5*p,PAL.shirtDark);
-  // Sleeves
-  px(ox,oy+5*p,3*p,5*p,PAL.shirt);
-  px(ox+13*p,oy+5*p,3*p,5*p,PAL.shirt);
-  px(ox,oy+5*p,1*p,5*p,PAL.shirtHL);
-  px(ox+15*p,oy+5*p,1*p,5*p,PAL.shirtDark);
-  // Neck
-  px(ox+6.5*p,oy+3*p,3*p,2*p,PAL.skin);
-  // Head
-  px(ox+4*p,oy,8*p,8*p,PAL.skin);
-  px(ox+4*p,oy+4*p,2*p,3*p,PAL.skinDark);
-  px(ox+10*p,oy+4*p,2*p,3*p,PAL.skinDark);
+  px(ox+s(2*p),  oy+s(20*p),s(4.5*p),s(2*p),  PAL.shoe);
+  px(ox+s(9.5*p),oy+s(20*p),s(4.5*p),s(2*p),  PAL.shoe);
+  px(ox+s(2*p),  oy+s(20*p),s(4.5*p),s(0.8*p),PAL.shoeStripe);
+  px(ox+s(9.5*p),oy+s(20*p),s(4.5*p),s(0.8*p),PAL.shoeStripe);
+  px(ox+s(3*p),  oy+s(15*p),s(2.5*p),s(6*p),  PAL.skin);
+  px(ox+s(10.5*p),oy+s(15*p),s(2.5*p),s(6*p), PAL.skin);
+  px(ox+s(2*p),  oy+s(11*p),s(12*p),s(5*p),   PAL.shorts);
+  px(ox+s(7.5*p),oy+s(11*p),s(1*p),s(5*p),    PAL.shortsDark);
+  px(ox+s(1*p),  oy+s(4*p), s(14*p),s(8*p),   PAL.shirt);
+  px(ox+s(1*p),  oy+s(4*p), s(2*p), s(8*p),   PAL.shirtHL);
+  px(ox+s(13*p), oy+s(4*p), s(2*p), s(8*p),   PAL.shirtDark);
+  px(ox+s(4*p),  oy+s(6*p), s(1*p), s(5*p),   PAL.shirtDark);
+  px(ox+s(11*p), oy+s(6*p), s(1*p), s(5*p),   PAL.shirtDark);
+  px(ox,         oy+s(5*p), s(3*p), s(5*p),   PAL.shirt);
+  px(ox+s(13*p), oy+s(5*p), s(3*p), s(5*p),   PAL.shirt);
+  px(ox,         oy+s(5*p), s(1*p), s(5*p),   PAL.shirtHL);
+  px(ox+s(15*p), oy+s(5*p), s(1*p), s(5*p),   PAL.shirtDark);
+  px(ox+s(6.5*p),oy+s(3*p), s(3*p), s(2*p),   PAL.skin);
+  px(ox+s(4*p),  oy,        s(8*p), s(8*p),   PAL.skin);
+  px(ox+s(4*p),  oy+s(4*p), s(2*p), s(3*p),   PAL.skinDark);
+  px(ox+s(10*p), oy+s(4*p), s(2*p), s(3*p),   PAL.skinDark);
 
-  // ── Anime eyes (clean pixel) ──
-  // Left eye: black frame → blue iris → top shine → bottom dark → white glint
-  px(ox+4*p,  oy+1.5*p, 4*p,  4.5*p,'#050514');    // frame
-  px(ox+4.5*p,oy+2*p,   3*p,  3.5*p,'#2d6ee8');    // iris
-  px(ox+4.5*p,oy+2*p,   3*p,  1.3*p,'#5599ff');    // top shine
-  px(ox+4.5*p,oy+4.5*p, 3*p,  0.8*p,'#0a1d66');    // bottom dark
-  px(ox+4.6*p,oy+2.1*p, 1.2*p,1.2*p,'#ffffff');    // white glint
-  px(ox+3.8*p,oy+1.1*p, 4.4*p,0.6*p,'#050514');    // eyelash
-  // Right eye
-  px(ox+8*p,  oy+1.5*p, 4*p,  4.5*p,'#050514');
-  px(ox+8.5*p,oy+2*p,   3*p,  3.5*p,'#2d6ee8');
-  px(ox+8.5*p,oy+2*p,   3*p,  1.3*p,'#5599ff');
-  px(ox+8.5*p,oy+4.5*p, 3*p,  0.8*p,'#0a1d66');
-  px(ox+8.6*p,oy+2.1*p, 1.2*p,1.2*p,'#ffffff');
-  px(ox+7.8*p,oy+1.1*p, 4.4*p,0.6*p,'#050514');
+  // Eyes — blue blocks, no border, fits pixel style
+  const ep = s(p);
+  px(ox+s(4.5*p),oy+s(2*p),s(3*p),s(3*p),'#2a68e0');
+  px(ox+s(4.5*p),oy+s(2*p),ep,ep,'#aaccff');
+  px(ox+s(6*p),  oy+s(3.5*p),ep,ep,'#0a1c55');
+  px(ox+s(8.5*p),oy+s(2*p),s(3*p),s(3*p),'#2a68e0');
+  px(ox+s(8.5*p),oy+s(2*p),ep,ep,'#aaccff');
+  px(ox+s(10*p), oy+s(3.5*p),ep,ep,'#0a1c55');
 
-  // Mouth + cheeks
-  px(ox+6.2*p,oy+6*p,3.6*p,0.7*p,PAL.skinDark);
-  px(ox+5.8*p,oy+5.4*p,0.7*p,0.7*p,PAL.skinDark);
-  px(ox+9.5*p,oy+5.4*p,0.7*p,0.7*p,PAL.skinDark);
-  // Earrings
-  px(ox+3.5*p,oy+3.5*p,0.8*p,0.8*p,PAL.earring);
-  px(ox+11.7*p,oy+3.5*p,0.8*p,0.8*p,PAL.earring);
+  px(ox+s(6*p),  oy+s(6*p), s(4*p),s(1*p),PAL.skinDark);
+  px(ox+s(5.5*p),oy+s(5.3*p),ep,ep,PAL.skinDark);
+  px(ox+s(9.5*p),oy+s(5.3*p),ep,ep,PAL.skinDark);
+  px(ox+s(3.5*p),oy+s(3.5*p),ep,ep,PAL.earring);
+  px(ox+s(12*p), oy+s(3.5*p),ep,ep,PAL.earring);
 
-  // Curly hair
-  px(ox+3*p,oy-4*p,10*p,6*p,PAL.hair);
-  px(ox+2*p,oy-2*p,12*p,4*p,PAL.hair);
-  px(ox+4*p,oy,8*p,2*p,PAL.hair);
-  px(ox,oy-1*p,3*p,5*p,PAL.hair);
-  px(ox+13*p,oy-1*p,3*p,5*p,PAL.hair);
-  px(ox+3*p,oy-6*p,3*p,3*p,PAL.hair);
-  px(ox+10*p,oy-6*p,3*p,3*p,PAL.hair);
-  px(ox+6*p,oy-7*p,4*p,3*p,PAL.hair);
-  px(ox+5*p,oy-3*p,2*p,1*p,PAL.hairHL);
-  px(ox+9*p,oy-3*p,2*p,1*p,PAL.hairHL);
-  px(ox+7*p,oy-5*p,2*p,1*p,PAL.hairHL);
+  px(ox+s(3*p),  oy-s(4*p),s(10*p),s(6*p),PAL.hair);
+  px(ox+s(2*p),  oy-s(2*p),s(12*p),s(4*p),PAL.hair);
+  px(ox+s(4*p),  oy,       s(8*p), s(2*p), PAL.hair);
+  px(ox,         oy-s(1*p),s(3*p), s(5*p), PAL.hair);
+  px(ox+s(13*p), oy-s(1*p),s(3*p), s(5*p), PAL.hair);
+  px(ox+s(3*p),  oy-s(6*p),s(3*p), s(3*p), PAL.hair);
+  px(ox+s(10*p), oy-s(6*p),s(3*p), s(3*p), PAL.hair);
+  px(ox+s(6*p),  oy-s(7*p),s(4*p), s(3*p), PAL.hair);
+  px(ox+s(5*p),  oy-s(3*p),s(2*p), s(1*p), PAL.hairHL);
+  px(ox+s(9*p),  oy-s(3*p),s(2*p), s(1*p), PAL.hairHL);
+  px(ox+s(7*p),  oy-s(5*p),s(2*p), s(1*p), PAL.hairHL);
 }
 
 
