@@ -161,6 +161,9 @@ const PAL = {
     ['#8b2be2','#5c1a99','#cc66ff'],
   ],
   carWindow:'#a8d8f0', carWindowReflect:'rgba(255,255,255,0.35)',
+  gHair:'#3a2218', gHairHL:'#5a3828', gSkin:'#f5c4a0', gSkinD:'#dda070',
+  gHoodie:'#1a1a1a', gHoodieHL:'#2d2d2d', gPants:'#c8c8c0', gPantsD:'#a8a8a0',
+  gShoe:'#e8e0cc', gShoeD:'#c8c0a8', heart:'#ff69b4',
   bldA:'#4a5a72', bldB:'#3a4a62', bldC:'#5a6a82',
   bldWindow:'#f8e870', bldWindowOff:'#2a3a50',
   leaves:'#2d7a2d', leavesDark:'#1d5a1d', trunk:'#7a4a1a',
@@ -245,6 +248,100 @@ function drawIsrael(cx, cy, bounce) {
   px(ox+7*p,  oy-5*p, 2*p, 1*p, PAL.hairHL);
   px(ox+1.5*p,oy+0*p, 1.2*p,1.2*p,PAL.hairHL);
   px(ox+13.5*p,oy+0*p,1.2*p,1.2*p,PAL.hairHL);
+}
+
+
+// ── GIRL ──
+function drawGirl(cx, cy, bounce) {
+  const p  = T/16;
+  const ox = cx - 8*p;
+  const oy = cy - 22*p + bounce;
+
+  // Shadow
+  ctx.save();
+  ctx.fillStyle='rgba(0,0,0,0.18)';
+  ctx.scale(1,0.25);
+  ctx.beginPath(); ctx.arc(cx,(cy+1)*4,6*p,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+
+  // Chunky shoes (wide, white/beige)
+  px(ox+1.5*p,oy+20*p, 5*p, 2.5*p, PAL.gShoeD);
+  px(ox+9.5*p,oy+20*p, 5*p, 2.5*p, PAL.gShoeD);
+  px(ox+1.5*p,oy+20*p, 5*p, 1.5*p, PAL.gShoe);
+  px(ox+9.5*p,oy+20*p, 5*p, 1.5*p, PAL.gShoe);
+
+  // Wide-leg sweatpants (light gray, very baggy)
+  px(ox+1*p,  oy+14*p, 6*p, 7*p, PAL.gPants);
+  px(ox+9*p,  oy+14*p, 6*p, 7*p, PAL.gPants);
+  px(ox+1*p,  oy+14*p, 1*p, 7*p, PAL.gPantsD);
+  px(ox+14*p, oy+14*p, 1*p, 7*p, PAL.gPantsD);
+  px(ox+2*p,  oy+11*p, 12*p, 4*p, PAL.gPants);
+  px(ox+7*p,  oy+11*p, 2*p, 4*p, PAL.gPantsD);
+
+  // Oversized black hoodie body
+  px(ox+1*p,  oy+3*p, 14*p, 9*p, PAL.gHoodie);
+  px(ox+1*p,  oy+3*p, 2*p,  9*p, PAL.gHoodieHL);
+  px(ox+13*p, oy+3*p, 2*p,  9*p, '#111');
+  // Hoodie pocket
+  px(ox+5*p,  oy+8*p, 6*p, 3*p, '#111');
+
+  // Sleeves (wide, oversized)
+  px(ox-1*p,  oy+4*p, 4*p, 6*p, PAL.gHoodie);
+  px(ox+13*p, oy+4*p, 4*p, 6*p, PAL.gHoodie);
+  px(ox-1*p,  oy+4*p, 1*p, 6*p, PAL.gHoodieHL);
+  px(ox+16*p, oy+4*p, 1*p, 6*p, '#111');
+
+  // Neck
+  px(ox+6.5*p,oy+2*p, 3*p, 2*p, PAL.gSkin);
+
+  // Head
+  px(ox+4*p,  oy-1*p, 8*p, 8*p, PAL.gSkin);
+  px(ox+4*p,  oy+3*p, 1.5*p,3*p,PAL.gSkinD);
+  px(ox+10.5*p,oy+3*p,1.5*p,3*p,PAL.gSkinD);
+  // Eyes (dark, medium)
+  px(ox+5.5*p,oy+1.5*p,1.5*p,1.5*p,'#2a1a0a');
+  px(ox+9*p,  oy+1.5*p,1.5*p,1.5*p,'#2a1a0a');
+  px(ox+5.2*p,oy+1.2*p,0.6*p,0.6*p,'#fff');
+  px(ox+8.7*p,oy+1.2*p,0.6*p,0.6*p,'#fff');
+  // Mouth
+  px(ox+6.5*p,oy+4.5*p,3*p,0.7*p,PAL.gSkinD);
+  // Nose
+  px(ox+7.5*p,oy+3*p,  1*p, 1*p, PAL.gSkinD);
+
+  // AirPods (tiny white dots)
+  px(ox+3.5*p,oy+1*p, 0.9*p,1.5*p,'#f5f5f5');
+  px(ox+11.6*p,oy+1*p,0.9*p,1.5*p,'#f5f5f5');
+
+  // Hair bun (tight, on top of head)
+  px(ox+5*p,  oy-4*p, 6*p, 4*p, PAL.gHair);
+  px(ox+6*p,  oy-5*p, 4*p, 2*p, PAL.gHair);
+  px(ox+7*p,  oy-6*p, 2*p, 2*p, PAL.gHair);
+  // Bun highlight
+  px(ox+6.5*p,oy-4.5*p,1.5*p,1*p,PAL.gHairHL);
+  // Stray wisps
+  px(ox+4*p,  oy-1*p, 1*p, 2*p, PAL.gHair);
+  px(ox+11*p, oy-1*p, 1*p, 2*p, PAL.gHair);
+}
+
+// ── HEART TRAIL ──
+function drawHeart(cx, cy, scale, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = PAL.heart;
+  ctx.translate(cx, cy);
+  ctx.scale(scale, scale);
+  const s = T*0.18;
+  // Two circles + triangle = heart
+  ctx.beginPath();
+  ctx.arc(-s*0.5, -s*0.3, s*0.6, 0, Math.PI*2);
+  ctx.arc( s*0.5, -s*0.3, s*0.6, 0, Math.PI*2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(-s*1.05, -s*0.1);
+  ctx.lineTo(0, s*1.1);
+  ctx.lineTo(s*1.05, -s*0.1);
+  ctx.fill();
+  ctx.restore();
 }
 
 // ── CAR ──
@@ -382,11 +479,15 @@ let lastScoreSfx=0;
 
 let player={row:1,col:Math.floor(COLS/2),fromRow:1,fromCol:Math.floor(COLS/2),
              toRow:1,toCol:Math.floor(COLS/2),jumping:false,jumpT:0,dead:false};
+let girl={row:4,col:Math.floor(COLS/2),bounce:0,bounceDir:1};
+let hearts=[];
 
 function initGame(){
   score=0; tick=0; rows=[]; maxRow=1; camRow=0; lastScoreSfx=0;
   player={row:1,col:Math.floor(COLS/2),fromRow:1,fromCol:Math.floor(COLS/2),
           toRow:1,toCol:Math.floor(COLS/2),jumping:false,jumpT:0,dead:false};
+  girl={row:4,col:Math.floor(COLS/2),bounce:0,bounceDir:1};
+  hearts=[];
   ensure(20);
 }
 function ensure(n){ while(rows.length<=n+5) rows.push(generateRow(rows.length)); }
@@ -489,6 +590,28 @@ function update(){
         if(Math.floor(score/5)>Math.floor(lastScoreSfx/5)){ sfxScore(); lastScoreSfx=score; }
       }
     }
+  }
+
+  // Girl stays 3-4 rows ahead, mirrors player column, leaves hearts
+  if(tick%2===0){
+    const targetRow = player.row + 3;
+    const targetCol = player.col;
+    if(girl.row < targetRow){ girl.row++; }
+    if(girl.col !== targetCol){
+      // leave heart at old position
+      hearts.push({row:girl.row, col:girl.col, life:1.0});
+      girl.col += (girl.col < targetCol ? 1 : -1);
+    }
+    // Bobbing bounce
+    girl.bounce += 0.18 * girl.bounceDir;
+    if(girl.bounce > T*0.12 || girl.bounce < 0) girl.bounceDir *= -1;
+    // Occasionally leave a heart while running forward
+    if(tick%18===0) hearts.push({row:girl.row, col:girl.col, life:1.0});
+  }
+  // Age hearts
+  for(let i=hearts.length-1;i>=0;i--){
+    hearts[i].life -= 0.018;
+    if(hearts[i].life<=0) hearts.splice(i,1);
   }
 
   const tCam=Math.max(0,player.row-3);
@@ -601,6 +724,12 @@ function render(){
       drawRoadRow(sy);
     }
   }
+  // Draw heart trail on tiles
+  for(const h of hearts){
+    const sy=rowY(h.row);
+    if(sy>canvas.height||sy+T<0) continue;
+    drawHeart(h.col*T+T/2, sy+T*0.55, 0.7+h.life*0.3, h.life*0.85);
+  }
   drawSkyline(skyH);
 
   for(let r=r0;r<=Math.min(r1,rows.length-1);r++){
@@ -620,6 +749,14 @@ function render(){
       ctx.strokeStyle='#ff0000'; ctx.lineWidth=3;
       ctx.beginPath(); ctx.moveTo(sx+6,sy+6); ctx.lineTo(sx+T-6,sy+T-6); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(sx+T-6,sy+6); ctx.lineTo(sx+6,sy+T-6); ctx.stroke();
+    }
+  }
+
+  // Draw girl (always ahead)
+  if(STATE==='playing'||STATE==='dead'){
+    const gsy=rowY(girl.row);
+    if(gsy>-T*2&&gsy<canvas.height+T){
+      drawGirl(girl.col*T+T/2, gsy+T, girl.bounce);
     }
   }
 
