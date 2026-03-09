@@ -7,6 +7,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>ISRAEL RUN 🏃 Tel Aviv</title>
 <style>
+#sc-wrap { position:fixed; bottom:-200px; left:0; width:1px; height:1px; opacity:0; pointer-events:none; }
+</style>
+<style>
 * { margin:0; padding:0; box-sizing:border-box; }
 html, body {
   width:100%; height:100%;
@@ -32,7 +35,13 @@ canvas {
 </style>
 </head>
 <body>
+<div id="sc-wrap">
+  <iframe id="sc-player"
+    src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/itsalyzea/sets/dream-os&color=%230d1b2a&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"
+    width="1" height="1" frameborder="0" scrolling="no" allow="autoplay"></iframe>
+</div>
 <canvas id="c"></canvas>
+<script src="https://w.soundcloud.com/player/api.js"></script>
 <script>
 const canvas = document.getElementById('c');
 const ctx    = canvas.getContext('2d');
@@ -54,18 +63,50 @@ window.addEventListener('orientationchange', ()=>setTimeout(resize, 300));
 if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
 
 // ─────────────────────────────────────────
-// AUDIO
+// AUDIO — SoundCloud Widget + Web Audio sfx
 // ─────────────────────────────────────────
 let AC = null;
 let musicOn = true;
-let musicTimer = null;
+let scWidget = null;
+let scReady  = false;
 
 function initAudio() {
   try {
     if (!AC) AC = new (window.AudioContext||window.webkitAudioContext)();
-    // iOS Safari suspends AudioContext — must resume on user gesture
     if (AC && AC.state === 'suspended') AC.resume();
   } catch(e) {}
+  if (!scWidget && window.SC) {
+    scWidget = SC.Widget(document.getElementById('sc-player'));
+    scWidget.bind(SC.Widget.Events.READY, function() {
+      scReady = true;
+      scWidget.setVolume(80);
+    });
+    scWidget.bind(SC.Widget.Events.FINISH, function() {
+      scWidget.next();
+      setTimeout(function(){ scWidget.play(); }, 300);
+    });
+  }
+}
+
+function scheduleMusic() {
+  if (!musicOn) return;
+  if (scReady && scWidget) {
+    scWidget.play();
+  } else {
+    setTimeout(function() {
+      if (musicOn) scheduleMusic();
+    }, 800);
+  }
+}
+
+function stopMusic() {
+  if (scWidget && scReady) scWidget.pause();
+}
+
+function toggleMusic() {
+  musicOn = !musicOn;
+  if (musicOn) scheduleMusic();
+  else stopMusic();
 }
 
 function tone(freq0, freq1, vol, dur, type, delay) {
@@ -97,74 +138,6 @@ function sfxScore() {
   tone(880,1100,0.07,0.08,'square',0.09);
 }
 
-// Chiptune background — original melody
-const BPM  = 128;
-const B    = 60/BPM;
-const C4=262,D4=294,E4=330,F4=349,G4=392,A4=440,B4=494;
-const C5=523,D5=587,E5=659,F5=698,G5=784,A5=880,C6=1047;
-
-// Melody: upbeat loop
-const MEL = [
-  [E5,.5],[E5,.5],[E5,1],
-  [C5,.5],[E5,.5],[G5,1],[G4,1],
-  [C5,1.5],[G4,.5],[E4,1],
-  [A4,1],[B4,1],[A4,.5],[G4,.5],
-  [E5,.67],[G5,.67],[A5,.67],[F5,.5],[G5,.5],
-  [E5,1],[C5,.5],[D5,.5],[B4,1],
-];
-const BASS = [
-  [C4*.5,2],[G4*.5,2],[A4*.5,2],[F4*.5,2],
-  [C4*.5,2],[G4*.5,2],[E4*.5,2],[G4*.5,2],
-];
-
-function scheduleMusic() {
-  if (!AC || !musicOn) return;
-  const start = AC.currentTime + 0.05;
-
-  let t = start;
-  for (const [f,d] of MEL) {
-    if (f>0) {
-      try {
-        const o=AC.createOscillator(), g=AC.createGain();
-        o.type='square'; o.frequency.value=f;
-        g.gain.setValueAtTime(0.055,t);
-        g.gain.setValueAtTime(0.055,t+d*B-0.03);
-        g.gain.exponentialRampToValueAtTime(0.0001,t+d*B);
-        o.connect(g); g.connect(AC.destination);
-        o.start(t); o.stop(t+d*B);
-      } catch(e){}
-    }
-    t += d*B;
-  }
-
-  t = start;
-  for (const [f,d] of BASS) {
-    if (f>0) {
-      try {
-        const o=AC.createOscillator(), g=AC.createGain();
-        o.type='triangle'; o.frequency.value=f;
-        g.gain.setValueAtTime(0.07,t);
-        g.gain.exponentialRampToValueAtTime(0.0001,t+d*B*0.85);
-        o.connect(g); g.connect(AC.destination);
-        o.start(t); o.stop(t+d*B);
-      } catch(e){}
-    }
-    t += d*B;
-  }
-
-  const loopLen = MEL.reduce((s,[,d])=>s+d,0)*B;
-  musicTimer = setTimeout(scheduleMusic, (loopLen-0.15)*1000);
-}
-
-function stopMusic() {
-  if (musicTimer) clearTimeout(musicTimer);
-}
-
-function toggleMusic() {
-  musicOn = !musicOn;
-  if (musicOn && AC) scheduleMusic();
-  else stopMusic();
-}
 
 // ─────────────────────────────────────────
 // PALETTE
