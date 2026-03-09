@@ -175,7 +175,7 @@ const PAL = {
 // ─────────────────────────────────────────
 function px(x,y,w,h,c){ ctx.fillStyle=c; ctx.fillRect(x,y,w,h); }
 
-// ── ISRAEL (original sprite) ──
+// ── ISRAEL (anime eyes) ──
 function drawIsrael(cx, cy, bounce) {
   const p  = T/16;
   const ox = cx - 8*p;
@@ -218,21 +218,37 @@ function drawIsrael(cx, cy, bounce) {
   // Neck
   px(ox+6.5*p,oy+3*p, 3*p, 2*p, PAL.skin);
 
-  // Head
+  // Head (slightly taller for big eyes)
   px(ox+4*p,  oy+0*p, 8*p, 8*p, PAL.skin);
   px(ox+4*p,  oy+4*p, 2*p, 3*p, PAL.skinDark);
   px(ox+10*p, oy+4*p, 2*p, 3*p, PAL.skinDark);
-  // Eyes
-  px(ox+5.5*p,oy+3*p, 1.5*p,1.5*p,'#1a1a1a');
-  px(ox+9*p,  oy+3*p, 1.5*p,1.5*p,'#1a1a1a');
-  px(ox+5*p,  oy+2.8*p,0.6*p,0.6*p,'#ffffff');
-  px(ox+8.5*p,oy+2.8*p,0.6*p,0.6*p,'#ffffff');
-  // Mouth
-  px(ox+6*p,  oy+6*p, 4*p, 0.8*p,PAL.skinDark);
-  px(ox+7.5*p,oy+4.5*p,1*p,1*p,  PAL.skinDark);
+
+  // Anime eyes — big blue
+  // Left eye outline + iris
+  px(ox+4.5*p, oy+1.5*p, 3.5*p, 4*p, '#0a0a14');
+  px(ox+5*p,   oy+2*p,   2.5*p, 3*p, '#1a55e8');
+  px(ox+5*p,   oy+2*p,   2.5*p, 1.2*p,'#4488ff');
+  px(ox+5*p,   oy+4.2*p, 2.5*p, 0.8*p,'#0a2288');
+  px(ox+5.2*p, oy+2*p,   0.9*p, 0.9*p,'#ffffff');
+  px(ox+6.5*p, oy+4*p,   0.5*p, 0.5*p,'#aaccff');
+  // Right eye outline + iris
+  px(ox+8*p,   oy+1.5*p, 3.5*p, 4*p, '#0a0a14');
+  px(ox+8.5*p, oy+2*p,   2.5*p, 3*p, '#1a55e8');
+  px(ox+8.5*p, oy+2*p,   2.5*p, 1.2*p,'#4488ff');
+  px(ox+8.5*p, oy+4.2*p, 2.5*p, 0.8*p,'#0a2288');
+  px(ox+8.7*p, oy+2*p,   0.9*p, 0.9*p,'#ffffff');
+  px(ox+10*p,  oy+4*p,   0.5*p, 0.5*p,'#aaccff');
+  // Eyelashes (top line)
+  px(ox+4.5*p, oy+1.2*p, 3.5*p, 0.5*p,'#050510');
+  px(ox+8*p,   oy+1.2*p, 3.5*p, 0.5*p,'#050510');
+
+  // Mouth — small cute smile
+  px(ox+6.5*p, oy+6*p, 3*p, 0.7*p, PAL.skinDark);
+  px(ox+6*p,   oy+5.4*p,0.7*p,0.7*p, PAL.skinDark);
+  px(ox+9.3*p, oy+5.4*p,0.7*p,0.7*p, PAL.skinDark);
   // Earrings
-  px(ox+3.5*p,oy+3.5*p,0.8*p,0.8*p,PAL.earring);
-  px(ox+11.7*p,oy+3.5*p,0.8*p,0.8*p,PAL.earring);
+  px(ox+3.5*p, oy+4*p,  0.8*p,0.8*p, PAL.earring);
+  px(ox+11.7*p,oy+4*p,  0.8*p,0.8*p, PAL.earring);
 
   // Curly hair
   px(ox+3*p,  oy-4*p, 10*p,6*p, PAL.hair);
@@ -251,11 +267,15 @@ function drawIsrael(cx, cy, bounce) {
 }
 
 
-// ── GIRL ──
+// ── GIRL (anime eyes, flowing hair) ──
 function drawGirl(cx, cy, bounce) {
   const p  = T/16;
   const ox = cx - 8*p;
   const oy = cy - 22*p + bounce;
+  // Wind animation for hair
+  const w1 = Math.sin(tick * 0.07) * 1.8 * p;
+  const w2 = Math.sin(tick * 0.07 + 1.2) * 1.4 * p;
+  const w3 = Math.sin(tick * 0.07 + 2.4) * 1.0 * p;
 
   // Shadow
   ctx.save();
@@ -264,13 +284,23 @@ function drawGirl(cx, cy, bounce) {
   ctx.beginPath(); ctx.arc(cx,(cy+1)*4,6*p,0,Math.PI*2); ctx.fill();
   ctx.restore();
 
+  // Flowing hair BEHIND body (drawn first so body overlaps)
+  // Right side strands
+  px(ox+12*p+w1,  oy-2*p, 2*p, 13*p, PAL.gHair);
+  px(ox+13.5*p+w2,oy+0*p, 1.5*p,11*p,PAL.gHairHL);
+  px(ox+11*p+w2,  oy+1*p, 2*p, 10*p, PAL.gHair);
+  // Left side strands
+  px(ox-2*p+w1*0.5,  oy-2*p, 2*p, 13*p, PAL.gHair);
+  px(ox-3.5*p+w2*0.5,oy+0*p, 1.5*p,11*p,PAL.gHairHL);
+  px(ox+0*p+w3*0.5,  oy+1*p, 2*p, 10*p, PAL.gHair);
+
   // Chunky shoes (wide, white/beige)
   px(ox+1.5*p,oy+20*p, 5*p, 2.5*p, PAL.gShoeD);
   px(ox+9.5*p,oy+20*p, 5*p, 2.5*p, PAL.gShoeD);
   px(ox+1.5*p,oy+20*p, 5*p, 1.5*p, PAL.gShoe);
   px(ox+9.5*p,oy+20*p, 5*p, 1.5*p, PAL.gShoe);
 
-  // Wide-leg sweatpants (light gray, very baggy)
+  // Wide-leg sweatpants
   px(ox+1*p,  oy+14*p, 6*p, 7*p, PAL.gPants);
   px(ox+9*p,  oy+14*p, 6*p, 7*p, PAL.gPants);
   px(ox+1*p,  oy+14*p, 1*p, 7*p, PAL.gPantsD);
@@ -278,14 +308,11 @@ function drawGirl(cx, cy, bounce) {
   px(ox+2*p,  oy+11*p, 12*p, 4*p, PAL.gPants);
   px(ox+7*p,  oy+11*p, 2*p, 4*p, PAL.gPantsD);
 
-  // Oversized black hoodie body
+  // Oversized black hoodie
   px(ox+1*p,  oy+3*p, 14*p, 9*p, PAL.gHoodie);
   px(ox+1*p,  oy+3*p, 2*p,  9*p, PAL.gHoodieHL);
   px(ox+13*p, oy+3*p, 2*p,  9*p, '#111');
-  // Hoodie pocket
-  px(ox+5*p,  oy+8*p, 6*p, 3*p, '#111');
-
-  // Sleeves (wide, oversized)
+  px(ox+5*p,  oy+8*p, 6*p,  3*p, '#111');
   px(ox-1*p,  oy+4*p, 4*p, 6*p, PAL.gHoodie);
   px(ox+13*p, oy+4*p, 4*p, 6*p, PAL.gHoodie);
   px(ox-1*p,  oy+4*p, 1*p, 6*p, PAL.gHoodieHL);
@@ -298,29 +325,45 @@ function drawGirl(cx, cy, bounce) {
   px(ox+4*p,  oy-1*p, 8*p, 8*p, PAL.gSkin);
   px(ox+4*p,  oy+3*p, 1.5*p,3*p,PAL.gSkinD);
   px(ox+10.5*p,oy+3*p,1.5*p,3*p,PAL.gSkinD);
-  // Eyes (dark, medium)
-  px(ox+5.5*p,oy+1.5*p,1.5*p,1.5*p,'#2a1a0a');
-  px(ox+9*p,  oy+1.5*p,1.5*p,1.5*p,'#2a1a0a');
-  px(ox+5.2*p,oy+1.2*p,0.6*p,0.6*p,'#fff');
-  px(ox+8.7*p,oy+1.2*p,0.6*p,0.6*p,'#fff');
-  // Mouth
-  px(ox+6.5*p,oy+4.5*p,3*p,0.7*p,PAL.gSkinD);
+
+  // Anime eyes — big blue
+  // Left eye outline + iris
+  px(ox+4*p,   oy+0*p, 3.5*p, 4*p, '#0a0a14');
+  px(ox+4.5*p, oy+0.5*p,2.5*p, 3*p, '#1a55e8');
+  px(ox+4.5*p, oy+0.5*p,2.5*p, 1.2*p,'#4488ff');
+  px(ox+4.5*p, oy+2.8*p,2.5*p, 0.8*p,'#0a2288');
+  px(ox+4.7*p, oy+0.5*p,0.9*p, 0.9*p,'#ffffff');
+  px(ox+6*p,   oy+2.6*p,0.5*p, 0.5*p,'#aaccff');
+  // Right eye
+  px(ox+8.5*p, oy+0*p, 3.5*p, 4*p, '#0a0a14');
+  px(ox+9*p,   oy+0.5*p,2.5*p, 3*p, '#1a55e8');
+  px(ox+9*p,   oy+0.5*p,2.5*p, 1.2*p,'#4488ff');
+  px(ox+9*p,   oy+2.8*p,2.5*p, 0.8*p,'#0a2288');
+  px(ox+9.2*p, oy+0.5*p,0.9*p, 0.9*p,'#ffffff');
+  px(ox+10.5*p,oy+2.6*p,0.5*p, 0.5*p,'#aaccff');
+  // Eyelashes
+  px(ox+4*p,   oy-0.2*p,3.5*p, 0.5*p,'#050510');
+  px(ox+8.5*p, oy-0.2*p,3.5*p, 0.5*p,'#050510');
+
+  // Cute small mouth
+  px(ox+6.5*p, oy+5*p,  3*p,  0.7*p, PAL.gSkinD);
+  px(ox+6*p,   oy+4.4*p,0.7*p,0.7*p, PAL.gSkinD);
+  px(ox+9.3*p, oy+4.4*p,0.7*p,0.7*p, PAL.gSkinD);
   // Nose
-  px(ox+7.5*p,oy+3*p,  1*p, 1*p, PAL.gSkinD);
+  px(ox+7.5*p, oy+2.5*p,1*p,  0.8*p, PAL.gSkinD);
 
-  // AirPods (tiny white dots)
-  px(ox+3.5*p,oy+1*p, 0.9*p,1.5*p,'#f5f5f5');
-  px(ox+11.6*p,oy+1*p,0.9*p,1.5*p,'#f5f5f5');
-
-  // Hair bun (tight, on top of head)
-  px(ox+5*p,  oy-4*p, 6*p, 4*p, PAL.gHair);
-  px(ox+6*p,  oy-5*p, 4*p, 2*p, PAL.gHair);
-  px(ox+7*p,  oy-6*p, 2*p, 2*p, PAL.gHair);
-  // Bun highlight
-  px(ox+6.5*p,oy-4.5*p,1.5*p,1*p,PAL.gHairHL);
-  // Stray wisps
-  px(ox+4*p,  oy-1*p, 1*p, 2*p, PAL.gHair);
-  px(ox+11*p, oy-1*p, 1*p, 2*p, PAL.gHair);
+  // Flowing hair ON TOP of head
+  px(ox+3*p,   oy-4*p, 10*p, 5*p, PAL.gHair);
+  px(ox+2*p,   oy-3*p, 12*p, 3*p, PAL.gHair);
+  px(ox+4*p,   oy-1*p, 8*p,  1.5*p,PAL.gHair);
+  px(ox+5*p,   oy-5*p, 6*p,  2*p, PAL.gHair);
+  px(ox+6*p,   oy-6*p, 4*p,  2*p, PAL.gHair);
+  // Hair highlights
+  px(ox+5.5*p, oy-4*p, 2*p,  1.5*p,PAL.gHairHL);
+  px(ox+8.5*p, oy-3*p, 1.5*p,1*p,  PAL.gHairHL);
+  // Front face hair strands (slightly blown)
+  px(ox+3*p+w3*0.3, oy-1*p, 1.5*p, 4*p, PAL.gHair);
+  px(ox+11.5*p+w3*0.3,oy-1*p,1.5*p,4*p, PAL.gHair);
 }
 
 // ── HEART TRAIL ──
